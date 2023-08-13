@@ -8,7 +8,11 @@ It will start the Metro Bundler
 
 **
 Press a -- To run app in Android device
+
+
 Press i -- To run app in IOS device
+
+
 Press w --  To run app in Web
 **
 

@@ -1,12 +1,17 @@
 # RTIMovieDemo
 In the project directory, you can run:
 
-yarn start
+**yarn start**
+
 It will start the Metro Bundler
 
+
+**
 Press a -- To run app in Android device
 Press i -- To run app in IOS device
 Press w --  To run app in Web
+**
+
 
 The app will reload if you make edits.
 You will also see any lint errors in the console.

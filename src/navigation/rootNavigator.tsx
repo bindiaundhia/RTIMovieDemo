@@ -10,12 +10,7 @@ import {
 // Component Imports
 import HomeScreen from "../screens/HomeScreen";
 import MovieDetailsScreen from "../screens/MovieDetailsScreen"; // Import MovieDetailsScreen
-
-// Types for navigation and screen options
-type RootNavigatorParamList = {
-  Home: undefined;
-  Movie: undefined;
-};
+import { RootNavigatorParamList } from "../common/types";
 
 const RootNavigator = () => {
   const Stack = createNativeStackNavigator<RootNavigatorParamList>();

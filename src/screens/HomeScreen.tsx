@@ -1,40 +1,45 @@
 // Library imports
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, memo } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { FlatList, View, Pressable, SafeAreaView } from "react-native";
 import { Image } from "expo-image";
 
 // Component imports
 import axiosInstance from "../api/MovieAPI";
 import { baseURL } from "../api/Https";
+import { IMovieItem, NavigationProps } from "../common/types";
+
+//Flashlist item
+// Added memo to avoid re-rendering of the component when the state changes.
+// It only re-renders when item changes.
+const MovieItem = memo(({ item }: { item: IMovieItem }) => {
+  const navigation: any = useNavigation<NavigationProps>();
+  return (
+    <View style={{ flex: 1 }}>
+      <Pressable
+        onPress={() =>
+          navigation.navigate("Movie", {
+            movie: item,
+          })
+        }
+      >
+        <Image
+          source={{
+            uri: `${baseURL}${item.poster_path}`,
+          }}
+          style={{
+            width: 250,
+            height: 300,
+          }}
+        />
+      </Pressable>
+    </View>
+  );
+});
 
 export default function HomeScreen({ navigation }) {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<IMovieItem[]>([]);
   const [page, setPage] = useState(1);
-
-  //Flashlist item
-  const renderItem = ({ item }) => {
-    return (
-      <View style={{ flex: 1 }}>
-        <Pressable
-          onPress={() =>
-            navigation.navigate("Movie", {
-              movie: item,
-            })
-          }
-        >
-          <Image
-            source={{
-              uri: `${baseURL}${item.poster_path}`,
-            }}
-            style={{
-              width: 250,
-              height: 300,
-            }}
-          />
-        </Pressable>
-      </View>
-    );
-  };
 
   const fetchMovies = async () => {
     // fetch the movie list from the API.
@@ -52,8 +57,10 @@ export default function HomeScreen({ navigation }) {
       });
   };
 
-  const fetchMoreMovies = () => {
-    // This function will be called and fetch more movies when the user scrolls to the end of the list.
+  // Fetch more movies when the user reaches the end of the list.
+  // useCallback is used to avoid  unnecessary re-rendering of the.
+  // It only re-renders when page changes.
+  const fetchMoreMovies = useCallback(() => {
     axiosInstance
       .get(`?include_adult=false&page=${page + 1}&language=en-US`)
       .then((response) => {
@@ -65,7 +72,7 @@ export default function HomeScreen({ navigation }) {
       .catch((error) => {
         console.log(error);
       });
-  };
+  }, [page]);
 
   useEffect(() => {
     fetchMovies();
@@ -77,9 +84,8 @@ export default function HomeScreen({ navigation }) {
       <FlatList
         data={movies}
         numColumns={2}
-        horizontal={false}
         showsVerticalScrollIndicator={false}
-        renderItem={renderItem}
+        renderItem={({ item }) => <MovieItem item={item} />}
         extraData={movies}
         keyExtractor={(item) => item.id.toString()}
         onEndReached={fetchMoreMovies}

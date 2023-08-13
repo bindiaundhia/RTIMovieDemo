@@ -1,0 +1,29 @@
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+// Types for navigation and screen options
+export type RootNavigatorParamList = {
+  Home: undefined;
+  Movie: undefined;
+};
+
+export type NavigationProps = NativeStackNavigationProp<
+  RootNavigatorParamList,
+  "Home"
+>;
+
+export interface IMovieItem {
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+}

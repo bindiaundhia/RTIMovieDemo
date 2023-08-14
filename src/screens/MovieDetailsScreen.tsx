@@ -1,4 +1,5 @@
 // Library imports
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -66,7 +67,11 @@ export default function MovieDetailsScreen({ route }) {
           <View style={styles.dividerStyle} />
           <View style={{ marginTop: 10 }}>
             {["Play Trailer 1", "Play Trailer 2"].map((item, index) => (
-              <Pressable style={styles.playButtons} key={index}>
+              <Pressable
+                style={styles.playButtons}
+                key={index}
+                testID="playButton"
+              >
                 <PlayCircleIcon color="#000" />
                 <Text style={styles.buttonTitle}>{item}</Text>
               </Pressable>

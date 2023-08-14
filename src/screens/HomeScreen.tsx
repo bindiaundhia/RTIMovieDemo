@@ -1,4 +1,5 @@
 // Library imports
+import React from "react";
 import { useEffect, useState, useCallback, memo } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { FlatList, View, Pressable, SafeAreaView } from "react-native";
@@ -12,10 +13,10 @@ import { IMovieItem, NavigationProps } from "../common/types";
 //Flashlist item
 // Added memo to avoid re-rendering of the component when the state changes.
 // It only re-renders when item changes.
-const MovieItem = memo(({ item }: { item: IMovieItem }) => {
+export const MovieItem = memo(({ item }: { item: IMovieItem }) => {
   const navigation: any = useNavigation<NavigationProps>();
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1 }} testID={`movieItem-${item.id}`}>
       <Pressable
         onPress={() =>
           navigation.navigate("Movie", {
@@ -83,6 +84,7 @@ export default function HomeScreen({ navigation }) {
     <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
       <FlatList
         data={movies}
+        testID="movieList"
         numColumns={2}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => <MovieItem item={item} />}
